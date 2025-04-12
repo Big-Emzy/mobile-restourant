@@ -15,6 +15,53 @@
     </header>
     <main>
         <div id="itemsContainer"></div>
+            <div id="itemsPickedContainer">
+                <h3 id="your-order">Your Order</h3>
+                <div id="ordered-Items-Container">
+                    <div class="ordered-Items">
+                        <div class="ordered-item-nameBox">
+                            <h4>Pizza</h4>
+                            <p>remove</p>
+                        </div>
+                        <div class="order-item-price">
+                            <p>$14</p>
+                        </div>
+                    </div>
+                    <div class="ordered-Items">
+                        <div class="ordered-item-nameBox">
+                            <h4>Pizza</h4>
+                            <p>remove</p>
+                        </div>
+                        <div class="order-item-price">
+                            <p>$14</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- total ordered item section -->
+                <div>
+                    <div class="total-order-box">
+                        <div class="ordered-item-nameBox">
+                            <h4>Total Price:</h4>
+                        </div>
+                        <div class="order-item-price">
+                            <p>$14</p>
+                        </div>
+                    </div>
+                </div>
+                <button id="complete-order-btn" type="submit">Complete order</button>
+            </div>        
+        <div id="form-Container">
+            <p>Enter card Detials</p>
+            <form action="#">
+                <input type="text" name="name" id="name" placeholder="Enter your name">
+                <input type="number" name="card-number" id="card-number" placeholder="Enter card number">
+                <input type="number" name="cvv" id="cvv" placeholder="Enter CVV">
+                <button type="submit">Pay</button>
+            </form>
+        </div>
+        <div id="order-confirmation">
+            <h3>Thanks, James! Your order is on its way!</h3>
+        </div>
     </main>
     <Script src="/script.js" type="module"></Script>
 </body>
