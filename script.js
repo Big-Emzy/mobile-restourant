@@ -4,6 +4,7 @@ const itemContainer = document.getElementById('itemsContainer')
 const itemsPicked = document.getElementById('itemsPicked')
 const yourOrder = document.getElementById('your-order')
 const totalOrderContainer = document.getElementById('totalOrder')
+const formContainer = document.getElementById('form-Container')
 
 let itemsBox = ''
 itemsData.map(function(item) {
@@ -32,6 +33,7 @@ itemContainer.innerHTML = itemsBox
 
 document.addEventListener('click',function(e) {
         addItem(e.target)
+        renderForm(e.target)
 })
 
 
@@ -83,3 +85,8 @@ function renderTotalOrder(priceList) {
 }
 
 
+function renderForm(e) {
+    if (e.id === 'complete-order-btn') {
+        formContainer.style.display = "block"
+    } 
+}

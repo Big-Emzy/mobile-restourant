@@ -200,6 +200,10 @@ nav > p {
 }
 
 
+.visible {
+    display: block;
+}
+
 /* the sytle below is for the form container */
 
 #form-Container {
