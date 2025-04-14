@@ -1,24 +1,27 @@
 import { itemsData } from "./data.js";
 
 const itemContainer = document.getElementById('itemsContainer')
-const itemsPicked = document.getElementById('itemsPickedContainer')
+const itemsPicked = document.getElementById('itemsPicked')
+const yourOrder = document.getElementById('your-order')
+const totalOrderContainer = document.getElementById('totalOrder')
 
 let itemsBox = ''
-const items = itemsData.map(function(item) {
+itemsData.map(function(item) {
+    const {name, ingredients, itemImage, price} = item
     itemsBox += `
     <div class="items">
                 <div class="pizza-namebox">
                     <div>
-                        <img src=${item.itemImage} alt=${item.name} class="itemImage">
+                        <img src=${itemImage} alt=${name} class="itemImage">
                     </div>
                     <div>
-                        <h3 class="itemName">${item.name}</h3>
-                        <p class="itemIngredients">${item.ingredients}</p>
-                        <p class="itemPrice">$${item.price}</p>
+                        <h3 class="itemName">${name}</h3>
+                        <p class="itemIngredients">${ingredients}</p>
+                        <p class="itemPrice">$${price}</p>
                     </div>
                 </div>
-                <div class="addItemsIcon" role="button" data-add=${item.name}>
-                    <img src="./public/images/addItemIcon.png" alt="adding button" class="add-icon" data-add=${item.name}>
+                <div class="addItemsIcon" role="button" data-add=${name} id=${price}>
+                    <img src="./public/images/addItemIcon.png" alt="adding button" class="add-icon" data-add=${name} id=${price}>
                 </div>
             </div>
     `
@@ -33,44 +36,50 @@ document.addEventListener('click',function(e) {
 
 
 //this is the function for adding items
-let listOfOrderedItems = []
+let listofItemsPrices = []
 let selectedItems = ''
 function addItem(e) {
  if (e.classList.contains('add-icon') || e.classList.contains('addItemsIcon')) {
-       // listOfOrderedItems.push(e.dataset.add)
+        listofItemsPrices.push(Number(e.id))
+        yourOrder.style.display = 'block'
         itemsPicked.style.display = 'block'
+        totalOrderContainer.style.display = 'block'
         selectedItems += `
-                     <h3 id="your-order">Your Order</h3>
-                            <div id="ordered-Items-Container">
                                 <div class="ordered-Items">
                                     <div class="ordered-item-nameBox">
                                         <h4>${e.dataset.add}</h4>
                                         <p>remove</p>
                                     </div>
                                     <div class="order-item-price">
-                                        <p>$14</p>
+                                        <p>$${e.id}</p>
                                     </div>
-                                </div>
-                            </div>     
-`
+                                </div> 
+                        `
+        renderTotalOrder(listofItemsPrices)              
  }
-
+  
  itemsPicked.innerHTML = selectedItems
- 
-} 
+}
 
 
-`
-<!-- total ordered item section -->
-                            <div>
-                                <div class="total-order-box">
-                                    <div class="ordered-item-nameBox">
-                                        <h4>Total Price:</h4>
-                                    </div>
-                                    <div class="order-item-price">
-                                        <p>$14</p>
-                                    </div>
-                                </div>
+
+let totalOrder = ''
+function renderTotalOrder(priceList) {
+    const sumOfPrice = priceList.reduce((total, currentValue) => total + currentValue)
+    totalOrder = `
+                    <div>
+                        <div class="total-order-box">
+                            <div class="ordered-item-nameBox">
+                                <h4>Total Price:</h4>
                             </div>
-                            <button id="complete-order-btn" type="submit">Complete order</button>
-`
+                            <div class="order-item-price">
+                                <p>$${sumOfPrice}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="complete-order-btn" type="submit">Complete order</button>
+                `
+    return totalOrderContainer.innerHTML = totalOrder    
+}
+
+

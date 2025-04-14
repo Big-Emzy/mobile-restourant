@@ -44,7 +44,6 @@ nav > p {
 
 
 #itemsContainer {
-    /* display: none; */
     position: relative;
     margin-bottom: 45px;
 }
@@ -114,9 +113,19 @@ nav > p {
 
 /* the below style is for the ordered item container */
 
-#itemsPickedContainer {
+#your-order {
     display: none;
 }
+
+
+#itemsPicked {
+    display: none;
+}
+
+#totalOrder {
+    display: none;
+}
+
 
 #your-order {
     text-align: center;
