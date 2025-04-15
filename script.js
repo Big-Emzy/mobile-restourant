@@ -5,6 +5,9 @@ const itemsPicked = document.getElementById('itemsPicked')
 const yourOrder = document.getElementById('your-order')
 const totalOrderContainer = document.getElementById('totalOrder')
 const formContainer = document.getElementById('form-Container')
+const cvv = document.getElementById('cvv')
+const form = document.getElementById('paymentForm')
+const orderConfirmation = document.getElementById('order-confirmation')
 
 let itemsBox = ''
 itemsData.map(function(item) {
@@ -34,6 +37,7 @@ itemContainer.innerHTML = itemsBox
 document.addEventListener('click',function(e) {
         addItem(e.target)
         renderForm(e.target)
+        submitForm(e)
 })
 
 
@@ -88,5 +92,26 @@ function renderTotalOrder(priceList) {
 function renderForm(e) {
     if (e.id === 'complete-order-btn') {
         formContainer.style.display = "block"
+    } 
+}
+
+
+function submitForm(e) {
+    if (e.target.id === 'pay') {
+        if (cvv.value.length > 3) {
+            e.preventDefault()
+            alert('your cvv should not be more than 3 values')
+        }
+        e.preventDefault()
+        yourOrder.style.display = 'none'
+        formContainer.style.display = "none"
+        itemsPicked.style.display = 'none'
+        totalOrderContainer.style.display = 'none'
+        orderConfirmation.style.display = 'block'
+        const formData = new FormData(form)
+        const userName = formData.get('name')
+        orderConfirmation.innerHTML = `
+             <h3>Thanks, ${userName}! Your order is on its way!</h3> 
+        `
     } 
 }

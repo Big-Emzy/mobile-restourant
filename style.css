@@ -210,9 +210,12 @@ nav > p {
     display: none;
     position: absolute;
     bottom: -42px;
-    width: 530px;
+    right: 70px;
+    /* width: 530px; */
+    width: 90%;
     height: 542.24px;
-    margin-left: 35px;
+    /* margin-left: 35px;
+    margin-left: 50px; */
     border-radius: 3.89px;
     background-color: white;
     box-shadow: 0 0 50px #757575;
