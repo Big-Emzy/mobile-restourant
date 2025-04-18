@@ -39,7 +39,7 @@ document.addEventListener('click',function(e) {
         e.preventDefault()
         addItem(e.target)
         renderForm(e.target)
-        submitForm(e)
+        submitForm(e) 
 })
 
 
@@ -48,13 +48,16 @@ document.addEventListener('click',function(e) {
 let selectedItems = ''
 function addItem(e) {
  if (e.classList.contains('add-icon') || e.classList.contains('addItemsIcon')) {
-       // listofItemsPrices.push(Number(e.id))
         yourOrder.style.display = 'block'
         itemsPicked.style.display = 'block'
         totalOrderContainer.style.display = 'block'
-        renderOrderItems(e.dataset.add, e.id)   
+        renderOrderItems(e.dataset.add, e.id) 
+        window.scrollTo(0, document.documentElement.scrollHeight)  
         form.reset()   
-        orderConfirmation.style.display = 'none'        
+        orderConfirmation.style.display = 'none'
+        if (formContainer.style.display = "block") {
+            formContainer.style.display = 'none'
+        }       
  }
   
  
@@ -65,14 +68,13 @@ function renderOrderItems(name, amount) {
     selectedItemsArray.push({
                             name: name,
                             id: amount
-                        })
-    console.log(selectedItemsArray)   
+                        })   
     selectedItems = selectedItemsArray.map(function(items, index) {
                 return `
                             <div class="ordered-Items">
                                 <div class="ordered-item-nameBox">
                                     <h4>${items.name}</h4>
-                                    <p data-index=${index}>remove</p>
+                                    <button data-index=${index} id='remove-btn'>remove</button>
                                 </div>
                                 <div class="order-item-price">
                                     <p>$${items.id}</p>
@@ -87,6 +89,7 @@ function renderOrderItems(name, amount) {
 }
 
 
+//total order rendering function
 
 let totalOrder = ''
 function renderTotalOrder(itemsArray) {
@@ -111,6 +114,7 @@ function renderTotalOrder(itemsArray) {
 function renderForm(e) {
     if (e.id === 'complete-order-btn') {
         formContainer.style.display = "block"
+        window.scrollTo(0, 0)
     } 
 }
 
@@ -137,38 +141,44 @@ function submitForm(e) {
             `
             itemsPicked.innerHTML = ''
             selectedItemsArray = []
+            window.scrollTo(0, document.documentElement.scrollHeight)
         }
         
     } 
 }
 
+// this is the  items deletion function
 
-//to continue here,i plan to use the index to match the item that will be clicked in the dom
-
- const testArray = [{
-                    name: 'Rice',
-                    id: 12
-                },
-                {
-                    name: 'Beans',
-                    id: 23 
-                },
-                {
-                    name: 'Yam',
-                    id: 15 
-                },
-                {
-                    name: 'Eggs',
-                    id: 15
-                }]
-
-testArray.forEach((object, index) => {
-    console.log(`Object at index ${index}:`, object);
+itemsPicked.addEventListener('click',function(e) {
+    if (e.target.id === 'remove-btn') {
+            formContainer.style.display = 'none'
+            selectedItemsArray.splice(e.target.dataset.index, 1)
+            selectedItems = selectedItemsArray.map(function(items, index) {
+                return `
+                            <div class="ordered-Items">
+                                <div class="ordered-item-nameBox">
+                                    <h4>${items.name}</h4>
+                                    <button data-index=${index} id='remove-btn'>remove</button>
+                                </div>
+                                <div class="order-item-price">
+                                    <p>$${items.id}</p>
+                                </div>
+                            </div> 
+                        `
+        }).join(' ')             
+                itemsPicked.innerHTML = ''
+                itemsPicked.innerHTML = selectedItems
+                renderTotalOrder(selectedItemsArray)
+                if (selectedItemsArray.length === 0) {
+                    yourOrder.style.display = 'none'
+                    totalOrderContainer.style.display = 'none'
+        }
+        
+    }
     
-    });
+})
 
-const totalIds = testArray.reduce(function(total, currentValue, currentIndex) {
-    return total + currentValue.id
- },0)   
+
+
 
  
