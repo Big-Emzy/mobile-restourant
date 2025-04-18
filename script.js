@@ -34,7 +34,9 @@ itemsData.map(function(item) {
 
 itemContainer.innerHTML = itemsBox
 
+
 document.addEventListener('click',function(e) {
+        e.preventDefault()
         addItem(e.target)
         renderForm(e.target)
         submitForm(e)
@@ -50,22 +52,32 @@ function addItem(e) {
         yourOrder.style.display = 'block'
         itemsPicked.style.display = 'block'
         totalOrderContainer.style.display = 'block'
-        selectedItems += `
-                                <div class="ordered-Items">
-                                    <div class="ordered-item-nameBox">
-                                        <h4>${e.dataset.add}</h4>
-                                        <p>remove</p>
-                                    </div>
-                                    <div class="order-item-price">
-                                        <p>$${e.id}</p>
-                                    </div>
-                                </div> 
-                        `
-        renderTotalOrder(listofItemsPrices)              
+        renderOrderItems(e)
+        renderTotalOrder(listofItemsPrices)   
+        form.reset()   
+        orderConfirmation.style.display = 'none'        
  }
   
- itemsPicked.innerHTML = selectedItems
+ 
 }
+
+
+function renderOrderItems(e) {
+                selectedItems += `
+                            <div class="ordered-Items">
+                                <div class="ordered-item-nameBox">
+                                    <h4>${e.dataset.add}</h4>
+                                    <p>remove</p>
+                                </div>
+                                <div class="order-item-price">
+                                    <p>$${e.id}</p>
+                                </div>
+                            </div> 
+                        `
+            itemsPicked.innerHTML = selectedItems
+
+}
+
 
 
 
@@ -97,21 +109,58 @@ function renderForm(e) {
 
 
 function submitForm(e) {
+    const formData = new FormData(form)
+    const userName = formData.get('name')
+    const cartNumber = formData.get('card-number')
+    const cvvNumber = formData.get('cvv')
     if (e.target.id === 'pay') {
-        if (cvv.value.length > 3) {
-            e.preventDefault()
-            alert('your cvv should not be more than 3 values')
+        if (cvv.value.length !== 3) {
+            alert('your cvv must be 3 digits')
+        } else if (!userName || !cartNumber || !cvvNumber) {
+            alert('kindly fill up all boxes')
+        } else {
+            listofItemsPrices = []
+            selectedItems = ''
+            yourOrder.style.display = 'none'
+            formContainer.style.display = "none"
+            itemsPicked.style.display = 'none'
+            totalOrderContainer.style.display = 'none'
+            orderConfirmation.style.display = 'block'
+            orderConfirmation.innerHTML = `
+                <h3>Thanks, ${userName}! Your order is on its way!</h3> 
+            `
         }
-        e.preventDefault()
-        yourOrder.style.display = 'none'
-        formContainer.style.display = "none"
-        itemsPicked.style.display = 'none'
-        totalOrderContainer.style.display = 'none'
-        orderConfirmation.style.display = 'block'
-        const formData = new FormData(form)
-        const userName = formData.get('name')
-        orderConfirmation.innerHTML = `
-             <h3>Thanks, ${userName}! Your order is on its way!</h3> 
-        `
+        
     } 
 }
+
+
+//to continue here,i plan to use the index to match the item that will be clicked in the dom
+
+ const testArray = [{
+                    name: 'Rice',
+                    id: 12
+                },
+                {
+                    name: 'Beans',
+                    id: 23 
+                },
+                {
+                    name: 'Yam',
+                    id: 15 
+                },
+                {
+                    name: 'Eggs',
+                    id: 15
+                }]
+
+testArray.forEach((object, index) => {
+    console.log(`Object at index ${index}:`, object);
+    
+    });
+
+const totalIds = testArray.reduce(function(total, currentValue, currentIndex) {
+    return total + currentValue.id
+ },0)   
+
+ 
