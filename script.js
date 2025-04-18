@@ -44,16 +44,15 @@ document.addEventListener('click',function(e) {
 
 
 //this is the function for adding items
-let listofItemsPrices = []
+
 let selectedItems = ''
 function addItem(e) {
  if (e.classList.contains('add-icon') || e.classList.contains('addItemsIcon')) {
-        listofItemsPrices.push(Number(e.id))
+       // listofItemsPrices.push(Number(e.id))
         yourOrder.style.display = 'block'
         itemsPicked.style.display = 'block'
         totalOrderContainer.style.display = 'block'
-        renderOrderItems(e)
-        renderTotalOrder(listofItemsPrices)   
+        renderOrderItems(e.dataset.add, e.id)   
         form.reset()   
         orderConfirmation.style.display = 'none'        
  }
@@ -61,29 +60,37 @@ function addItem(e) {
  
 }
 
-
-function renderOrderItems(e) {
-                selectedItems += `
+let selectedItemsArray = []
+function renderOrderItems(name, amount) {
+    selectedItemsArray.push({
+                            name: name,
+                            id: amount
+                        })
+    console.log(selectedItemsArray)   
+    selectedItems = selectedItemsArray.map(function(items, index) {
+                return `
                             <div class="ordered-Items">
                                 <div class="ordered-item-nameBox">
-                                    <h4>${e.dataset.add}</h4>
-                                    <p>remove</p>
+                                    <h4>${items.name}</h4>
+                                    <p data-index=${index}>remove</p>
                                 </div>
                                 <div class="order-item-price">
-                                    <p>$${e.id}</p>
+                                    <p>$${items.id}</p>
                                 </div>
                             </div> 
                         `
-            itemsPicked.innerHTML = selectedItems
+    }).join(' ')             
+        itemsPicked.innerHTML = ''
+        itemsPicked.innerHTML = selectedItems
+        renderTotalOrder(selectedItemsArray)
 
 }
 
 
 
-
 let totalOrder = ''
-function renderTotalOrder(priceList) {
-    const sumOfPrice = priceList.reduce((total, currentValue) => total + currentValue)
+function renderTotalOrder(itemsArray) {
+    const sumOfPrice = itemsArray.reduce((total, currentValue) => total + Number(currentValue.id), 0)
     totalOrder = `
                     <div>
                         <div class="total-order-box">
@@ -119,7 +126,6 @@ function submitForm(e) {
         } else if (!userName || !cartNumber || !cvvNumber) {
             alert('kindly fill up all boxes')
         } else {
-            listofItemsPrices = []
             selectedItems = ''
             yourOrder.style.display = 'none'
             formContainer.style.display = "none"
@@ -129,6 +135,8 @@ function submitForm(e) {
             orderConfirmation.innerHTML = `
                 <h3>Thanks, ${userName}! Your order is on its way!</h3> 
             `
+            itemsPicked.innerHTML = ''
+            selectedItemsArray = []
         }
         
     } 
